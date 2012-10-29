@@ -1,10 +1,7 @@
 # coding=utf-8
-# http://code.activestate.com/recipes/576551-simple-web-crawler/
-# https://bitbucket.org/kuytu/crawlpy/src/5383922384ba7150c5bd4017009bf53810b7dfbb/crawlPy.py?at=default
 
 import urllib2
 import urlparse
-import sys
 from cgi import escape
 from BeautifulSoup import BeautifulSoup
 
@@ -114,67 +111,3 @@ class Crawler(object):
             counter = 0
             print "Remaining : ", self.remaining, " url(s) to crawl!"
             print "Depth = ", self.depth
-            
-            
-def search_parent(parent, url, tree):
-    """ Recrusive function to add the url as a child of the parent """
-    if tree != {}:
-        for k in tree.keys():
-            if parent == k:
-                tree[k][url] = {}
-                return True
-            else:
-                search_parent(parent, url, tree[k])
-    else:
-        return False                          
-            
-def urls_to_tree(urls, tree):
-    """ Takes the URLS structure and creates a tree structure as parent -> children """          
-    for (url, prop) in urls.items():
-        if prop["parent"] == url:
-            tree[url] = dict()
-        else:
-            if not search_parent(prop["parent"], url, tree):
-                tree[prop["parent"]] = {url:{}}
-                
-
-# Global variable containing all the URLS following this scheme of node
-# { "http_url", {"toCrawl" : bool, "parent" : "http_parent"} }
-urls = dict()
-# Global variable containing the final tree of all the urls following this scheme
-# { "parent" : { "child1" : {}, "child2" : { "subchild1" : {} } }
-tree = dict()
-
-#######################################################################
-# Starting point of the crawler : ask the user what he wants to crawl
-http = raw_input("What webpage do you want to crawl [http(s) page]? ")
-ending = raw_input("What is the ending condition [str]? ")
-deep = raw_input("How deeper [int] do you want to go (None = infinite)? ")
-
-# Verifying datas
-if deep == "":
-    deep = None
-if ending == "":
-    ending = None
-if not (http.startswith("http") or http.startswith("https")):
-    print "Invalid webpage"
-    sys.exit(42)
-try:
-    deep = int(deep)
-except:
-    if deep != None:
-        print "Invalid deep"
-        sys.exit(42)
-    
-# Starts the crawler    
-c = Crawler(http, urls, ending, deep)
-c.crawl()
-             
-# Creates the tree structure using the URLS found previously
-urls_to_tree(urls, tree)
-
-# To debug : prints the tree at the end and the number of urls found
-print "\n======= Finished, displaying the tree ========="
-for i in tree.items():
-    print i     
-print "\n======= Number of urls found : ", len(urls), " ========"

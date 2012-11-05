@@ -32,13 +32,18 @@ except:
     if deep != None:
         print "Invalid deep"
         sys.exit(42)
-    
+
+### CHEATING ENTRIES 
+http="http://etud.insa-toulouse.fr/~club_robot/forum/"
+ending="club_robot"
+deep=None
+   
 # Starts the crawler    
 c = Crawler(http, urls, ending, deep)
 c.crawl()
              
 # Creates the tree structure using the URLS found previously
-urls_to_tree(urls, tree)
+urls_to_tree(http, urls, tree)
 
 # To debug : prints the tree at the end and the number of urls found
 print "\n======= Finished, displaying the tree ========="
@@ -50,4 +55,4 @@ print "\n======= Number of urls found : ", len(urls), " ========"
 print "\n======= Generating the graph ========"
 graph = Generate_Graph(http, urls, tree).graph
 print "======= Displaying the graph ========"
-Display_Graph(graph)
+Display_Graph(http, graph)

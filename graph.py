@@ -9,18 +9,21 @@ class Generate_Graph(object):
         self.urls   = [url for (url, prop) in urls.items()]
         self.tree   = tree
         self.graph  = nx.Graph()
-        self.colors = ["red", "blue", "green", "black", "orange", "violet", "purple"]
-        self._i     = -1
+        self.colors = ["red", "blue", "green", "orange", "violet", "purple", "black"]
+        self._i     = 1
+        self._dec   = False
         # Calling generate
         self._generate()
         
     def _generate(self):
         # Adding root node
-        self.graph.add_node(self.root, color='blue')
+        self.graph.add_node(self.root, color=self.colors[0])
         # Adding all the nodes
         self.graph.add_nodes_from(self.urls)
         # Connecting the nodes
         self._add_edges(self.root, self.tree)
+        # Colors for the nodes
+        self._add_node_colors(self.tree)
         
     def _add_edges(self, root, tree):
         # Recursive function : add all the edges
@@ -35,21 +38,37 @@ class Generate_Graph(object):
             self._i += 1
             for k in tree.keys():
                 self.graph.node[k]["color"] = self.colors[self._i]
-                self._add_node_colors(k, tree[k])
-                self._i -= 1
+                self._add_node_colors(tree[k])
+            self._i -= 1
                 
 class Display_Graph(object):
-    def __init__(self, graph):
+    def __init__(self, root, graph):
         # Initialisations
+        self.root  = root
         self.graph = graph
         # Calling display
         self._display(self.graph)
         
     def _display(self, graph):
-        # Colors for all the nodes : TODO : TO DEBUG
+        # Calculating positions
+        pos=nx.spring_layout(self.graph)
+        # Adding colors for all the nodes
         for n in self.graph.nodes():
             if "color" in self.graph.node[n].keys():
-                nx.draw_networkx_nodes(self.graph, nx.spring_layout(self.graph), nodelist = [n], node_color=self.graph.node[n]["color"])
-        # Drawing the graph and displaying it
-        nx.draw(self.graph)
+                nx.draw_networkx_nodes(self.graph, pos, nodelist = [n], node_color=self.graph.node[n]["color"])
+        # Adding edges
+        nx.draw_networkx_edges(self.graph, pos)
+        # Adding labels
+        nx.draw_networkx_labels(self.graph, pos)
+                
+        # Putting a title (only if we have margins)
+        plt.title("Crawling " + str(self.root))
+        # Putting a window title
+        plt.figure(1).canvas.set_window_title('Crawling ' + str(self.root)) 
+        # Hidding x and y axes
+        plt.gca().axes.get_xaxis().set_visible(False)
+        plt.gca().axes.get_yaxis().set_visible(False)
+        # Adjusting margins
+        plt.subplots_adjust(left=0, right=1, top=1, bottom=0) # 0 < value < 1 (if we want margins, just put 0.1 and 0.9 for ex)
+        # Showing the graph
         plt.show()

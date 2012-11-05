@@ -34,9 +34,9 @@ except:
         sys.exit(42)
 
 ### CHEATING ENTRIES 
-http="http://etud.insa-toulouse.fr/~club_robot/forum/"
-ending="club_robot"
-deep=None
+#http="http://etud.insa-toulouse.fr/~club_robot/forum/"
+#ending="club_robot"
+#deep=None
    
 # Starts the crawler    
 c = Crawler(http, urls, ending, deep)

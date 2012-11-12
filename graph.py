@@ -71,4 +71,9 @@ class Display_Graph(object):
         # Adjusting margins
         plt.subplots_adjust(left=0, right=1, top=1, bottom=0) # 0 < value < 1 (if we want margins, just put 0.1 and 0.9 for ex)
         # Showing the graph
-        plt.show()
+        ## plt.show()
+        
+        # just saving a graph to disk, the way it is done should be
+        # and we need a way to dynamically show the .png on the page 
+        plt.savefig("html/graph.png")
+        

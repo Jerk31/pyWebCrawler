@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="${jquery_ui_css_url}" media="screen" />
+    <script type="text/javascript" src="${jquery_url}"></script>
+    <script type="text/javascript" src="${jquery_ui_url}"></script>
+    <style>
+    
+    .fg-button {
+    outline: 0;
+    clear: left;
+    margin:0 4px 0 0;
+    padding: .1em .5em;
+    text-decoration:none !important;
+    cursor:pointer;
+    position: relative;
+    text-align: center;
+    zoom: 1;
+    }
+    
+    .fg-button .ui-icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -8px;
+    left: 50%;
+    margin-left: -8px;
+    }
+    
+    a.fg-button { float:left;  }
+    
+    .wholeclass {
+	position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+	}
+	
+	.leftclass {
+	position: relative;
+	float: right;
+	width: 50%;
+	}
+	
+	.rightclass {
+	float: right;
+	position: relative;
+	width: 50%;
+	}
+    
+    .terminal {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    width: 100%; 
+    height: 30em;
+    border: none;
+    }
+    
+
+    </style>
+  </head>
+  <body>
+  <script type="text/javascript">
+    $$(function(){
+        $$('#result').hide();
+        $$('#kill_crawl').click(function() {
+            $$.ajax({
+                url: "/killCrawl",
+                cache: false,
+                success: function(html){
+                    window.frames[0].stop();
+                    $$("#result").html(html);
+                    $$("#result").show('slow');
+                }
+            });
+            return false;
+        });
+    });
+    </script>
+  <h3>pyWebCrawler</h3>
+  <form id="url_form" target="console_iframe" method="post" action="/startCrawl">
+	<input type="text" id="url" name="url" size="18" />
+  <button id="start_crawl" class="fg-button ui-state-default ui-corner-all" type="submit">
+	Crawl
+  </button>
+  </form>
+  <form id="kill_form" method="post" action="/killCrawl">
+  <button id="kill_crawl" class="fg-button ui-state-default ui-corner-all"
+	title="Click to stop crawling (SIGINT)" type="submit">
+	Kill
+  </button>
+  </form>
+  
+  
+  <div id="wholebox" class="wholeclass">
+  <div id="picturediv" class="rightclass">
+	<img src="img/graph.png" width="100%" alt ="No graph to display."/> 
+  </div>
+  <div id="leftpart" class="leftclass">
+	  <div id="result" class="ui-state-highlight">
+	  <span class="ui-icon ui-icon-check ui-icon-left" style="margin-right: .3em;">
+	  </span>
+	  </div>
+	  <iframe name="console_iframe" class="terminal" /> 
+  </div>
+  </div>
+  </body>
+</html>

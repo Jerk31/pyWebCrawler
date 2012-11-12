@@ -91,12 +91,15 @@ class Crawler(object):
         page = Fetcher(self.root, self.urls, self.end)
         page.fetch()
         
+        print 'starting crawling'
+        
         # Urls remaining to crawl
         to_crawl = [d for d in self.urls if self.urls[d]["toCrawl"] == True]
         while to_crawl != [] and (self.depth > 0 or self.depth == None):
             # For all the URLS remaining to crawl, we fetch it to take all the links
             for url in to_crawl:
                 counter += 1
+                print "\n"
                 print "Fetching url : ", url, " (", counter, "/", self.remaining, ")"
                 page = Fetcher(url, self.urls, self.end)
                 self.urls[url]["toCrawl"] = False
@@ -109,5 +112,5 @@ class Crawler(object):
             to_crawl = [d for d in self.urls if self.urls[d]["toCrawl"] == True]
             self.remaining = len(to_crawl)
             counter = 0
-            print "Remaining : ", self.remaining, " url(s) to crawl!"
-            print "Depth = ", self.depth
+            print "Remaining : ", self.remaining, " url(s) to crawl!", "\n"
+            print "Depth = ", self.depth, "\n"

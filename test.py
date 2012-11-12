@@ -41,25 +41,24 @@ http="http://etud.insa-toulouse.fr/~club_robot/forum/"
 ending="club_robot"
 deep=None
 
-dbO = dB.DbObject()
-dbO.connect()
-###dbO.coll.insert({"g" : 12})
-
-
+# Connecting to the db
+db0 = dB.DbObject(http)
+db0.connect()
 
 # Starts the crawler
 c = Crawler(http, urls, ending, deep)
 c.crawl()
 
+# Insert everything in the database
+insert_database(urls, db0)
+
+# Reads in the database
+read_database(urls, db0)
 
 # Creates the tree structure using the URLS found previously
 urls_to_tree(http, urls, tree)
 
-
-for item in tree.items():
-    dbO.addURL({"url" : "http::///www.dasdlasld.dasdas.pl", "isLast" : False})
-
-# To debug : prints the tree at the end and the number of urls found
+# Prints the tree at the end and the number of urls found
 print "\n======= Finished, displaying the tree ========="
 for i in tree.items():
     print i

@@ -29,3 +29,14 @@ def urls_to_tree(root, urls, tree):
                     tree[prop["parent"]] = {url:{}}
                     urls_found.append(prop["parent"])
                     urls_found.append(url)
+                    
+def insert_database(urls, db):
+    """ Insert the urls into the database we're currently working with """
+    for (url, prop) in urls.items():
+        db.addURL({"url" : url, "parent" : prop["parent"]})
+        
+def read_database(urls, db):
+    """ Reads the database we're currently working with and re-creates the urls tree """
+    for e in db.find():
+        del e['_id']
+        urls[e["url"]] = {"parent" : e["parent"]}

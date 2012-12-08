@@ -1,8 +1,6 @@
 # coding=utf-8
 
 import urllib2
-import urlparse
-from cgi import escape
 from BeautifulSoup import BeautifulSoup
 
 __version__ = "0.1"
@@ -18,11 +16,11 @@ class Fetcher(object):
         self.end = end
         
     def _addHeaders(self, request):
-        # Add the headers to tell the website who we are
+        """ Add the headers to tell the website who we are """
         request.add_header("User-Agent", AGENT)
 
     def open(self):
-        # Opens the url with urllib2
+        """ Opens the url with urllib2 """
         url = self.url
         try:
             request = urllib2.Request(url)
@@ -32,6 +30,8 @@ class Fetcher(object):
         return (request, handle)
         
     def fetch(self):
+        """ Main function of the fetcher, will try to find the href 
+        attributes inside the a tags and add them to the urls dictionnary """
         tags = []
         request, handle = self.open()
         self._addHeaders(request)
@@ -57,7 +57,6 @@ class Fetcher(object):
                 if (href is not None) and (href not in self.urls) and ("pdf" not in href):
                     # We only need http or https urls
                     if href.startswith("http://") or href.startswith("https://"):
-                        url = urlparse.urljoin(self.url, escape(href))
                         self.urls[href] = dict()
                         self.urls[href]["parent"] = self.url
                         # If the URL in INSIDE our website, we keep it for the crawling
@@ -85,6 +84,8 @@ class Crawler(object):
             self.end = ending_condition
         
     def crawl(self):
+        """ Main function of the crawler, will crawl a website and fill the
+        urls dictionnary with the urls found in the website """
         # Number of urls we have crawled
         counter = 0
         # Looks at the links in the root page

@@ -47,7 +47,6 @@ def main(url, stopVal, depth):
 		c.crawl()
 		urls_to_tree(url, urls, tree)
 		print "======= Displaying the tree =========\n"
-		print len(tree)
 		for i in tree.items():
 			print i
 		print "======= Number of urls found : ", len(urls), " ========\n"

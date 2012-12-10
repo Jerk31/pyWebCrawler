@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import time
 
 class Generate_Graph(object):
+    """ Class generating the datas for the graph by providing it
+    the urls and tree dictionnaries """
     def __init__(self, root, urls, tree):
         # Initialisations
         self.root   = root
@@ -18,6 +20,7 @@ class Generate_Graph(object):
         self._generate()
         
     def _generate(self):
+        """ Generates internally the graph in the self.graph variable """
         # Adding root node
         self.graph.add_node(self.root, color=self.colors[0])
         # Adding all the nodes
@@ -28,14 +31,14 @@ class Generate_Graph(object):
         self._add_node_colors(self.tree)
         
     def _add_edges(self, root, tree):
-        # Recursive function : add all the edges
+        """ Recursive function : add all the edges to the graph """
         if tree != {}:
             for k in tree.keys():
                 self.graph.add_edge(root, k)
                 self._add_edges(k, tree[k])
                 
     def _add_node_colors(self, tree):
-        # Recursive function : add colors for the nodes
+        """ Recursive function : add colors for the nodes """
         if tree != {}:
             self._i += 1
             for k in tree.keys():
@@ -44,16 +47,19 @@ class Generate_Graph(object):
             self._i -= 1
                 
 class Display_Graph(object):
+    """ Class generating a PNG of the graph by providing it the graph datas """
     def __init__(self, root, graph):
         # Initialisations
         self.root  = root
         self.graph = graph
         # Calling display
-        self._display(self.graph)
+        self._display()
         
-    def _display(self, graph):
+    def _display(self):
+        """ Generates the PNG of the graph by using the graph data
+        previously calculated """
         # Calculating positions
-        pos=nx.spring_layout(self.graph)
+        pos = nx.spring_layout(self.graph)
         # Adding colors for all the nodes
         for n in self.graph.nodes():
             if "color" in self.graph.node[n].keys():
@@ -75,8 +81,6 @@ class Display_Graph(object):
         # Showing the graph
         ## plt.show()
         
-        
         # the picture name is current time since epoch 
-        self.path = str(time.time()).split(".")[0]; 
+        self.path = str(time.time()).split(".")[0]
         plt.savefig("html/img/" + self.path + ".png")
-        

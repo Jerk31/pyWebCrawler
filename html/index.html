@@ -82,7 +82,15 @@
     </script>
   <h3>pyWebCrawler</h3>
   <form id="url_form" target="console_iframe" method="post" action="/startCrawl">
-	<input type="text" id="url" name="url" size="18" />
+	URL: <input type="text" id="url" name="url" size="25" ><br/>
+	stop value: <input type="text" id="stopVal" name="stopVal" size="19" />
+	depth: 
+	<select id="depth" name="depth">
+		<option value="0">0</option>
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+	</select><br/>
   <button id="start_crawl" class="fg-button ui-state-default ui-corner-all" type="submit">
 	Crawl
   </button>

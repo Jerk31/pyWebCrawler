@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 import os, signal
 from subprocess import Popen, PIPE
-#
 from string import Template
-
 import cherrypy
 
 DIRECTORY = os.path.join(os.path.abspath("."), u"html")
@@ -30,9 +28,11 @@ class MainPage(object):
 
 
     @cherrypy.expose
-    def startCrawl(self, url, **kw):
-        url = "'" + url.replace("'", "'\\''") + "'"
-        command = "python test.py" ##% host
+    def startCrawl(self, url, stopVal, depth, **kw):
+        ## return "<html><body>"+url+" "+stopVal+" "+depth+"<body></html>"
+        ## url = "'" + url.replace("'", "'\\''") + "'"
+        command = "python runCrawler.py %s %s %s" % (url, stopVal, depth)
+        ## return "python runCrawler.py %s %s %s" % (url, stopVal, depth)
         ## command = "ping %s" % host
         scroll_to_bottom = '<script type="text/javascript">window.scrollBy(0,50);</script>'
         process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE,
@@ -60,10 +60,9 @@ class MainPage(object):
 
     @cherrypy.expose
     def killCrawl(self, **kw):
-
         pid = cherrypy.session.get('pid')
         if not pid:
-            return "Nothing to kill"
+            return "No crawl to kill"
         os.killpg(pid, signal.SIGINT)
         return "The crawl was stopped."
 

@@ -70,7 +70,8 @@ class Fetcher(object):
                                         
     
 class Crawler(object):
-    """ This class is designed to crawl a website, starting at the root point and deeping until the depth.
+    """ This class is designed to crawl a website, starting at the root point and going deeper until
+		the specified depth is reached.
         If the depth is None, it will crawl all the website.
         The default ending condition is the root point, we don't want to crawl all the web..."""
         

@@ -2,6 +2,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
+import time
+
 class Generate_Graph(object):
     def __init__(self, root, urls, tree):
         # Initialisations
@@ -73,7 +75,8 @@ class Display_Graph(object):
         # Showing the graph
         ## plt.show()
         
-        # just saving a graph to disk, the way it is done should be
-        # and we need a way to dynamically show the .png on the page 
-        plt.savefig("html/graph.png")
+        
+        # the picture name is current time since epoch 
+        self.path = str(time.time()).split(".")[0]; 
+        plt.savefig("html/img/" + self.path + ".png")
         

@@ -1,6 +1,7 @@
 # coding=utf-8
 import networkx as nx
 import matplotlib.pyplot as plt
+import os, sys
 
 import time
 
@@ -52,6 +53,7 @@ class Display_Graph(object):
         # Initialisations
         self.root  = root
         self.graph = graph
+        self.path  = None
         # Calling display
         self._display()
         
@@ -83,4 +85,8 @@ class Display_Graph(object):
         
         # the picture name is current time since epoch 
         self.path = str(time.time()).split(".")[0]
-        plt.savefig("html/img/" + self.path + ".png")
+        if (os.path.isdir("html/img/")):
+            plt.savefig("html/img/" + self.path + ".png")
+        else:
+            os.mkdir("html/img/")
+            plt.savefig("html/img/" + self.path + ".png")

@@ -91,29 +91,32 @@
 		<option value="2">2</option>
 		<option value="3">3</option>
 	</select><br/>
-  <button id="start_crawl" class="fg-button ui-state-default ui-corner-all" type="submit">
-	Crawl
-  </button>
+    <button id="start_crawl" class="fg-button ui-state-default ui-corner-all" title="Click to start crawling" type="submit">
+        Crawl
+    </button>
   </form>
   <form id="kill_form" method="post" action="/killCrawl">
-  <button id="kill_crawl" class="fg-button ui-state-default ui-corner-all"
-	title="Click to stop crawling (SIGINT)" type="submit">
-	Kill
-  </button>
+    <button id="kill_crawl" class="fg-button ui-state-default ui-corner-all" title="Click to stop crawling (SIGINT)" type="submit">
+        Kill
+    </button>
+  </form>
+  <form id="display_form" target="picturediv" method="post" action="/displayGraph">
+    <button id="display_button" class="fg-button ui-state-default ui-corner-all" title="Click to display the graph" type="submit">
+        Display
+    </button>
   </form>
   
-  
-  <div id="wholebox" class="wholeclass">
-  <div id="picturediv" class="rightclass">
-	<img src="img/graph.png" width="100%" alt ="No graph to display."/> 
+  <div id="picturediv" class="wholeclass">
+	<!--<img src="img/graph.png" width="100%" alt ="No graph to display."/> -->
   </div>
-  <div id="leftpart" class="leftclass">
+  <div id="wholebox" class="wholeclass">
+  <!--<div id="leftpart" class="leftclass"> -->
 	  <div id="result" class="ui-state-highlight">
 	  <span class="ui-icon ui-icon-check ui-icon-left" style="margin-right: .3em;">
 	  </span>
 	  </div>
 	  <iframe name="console_iframe" class="terminal" /> 
-  </div>
+  <!-- </div> -->
   </div>
   </body>
 </html>

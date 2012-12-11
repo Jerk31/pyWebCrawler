@@ -10,7 +10,7 @@ def main(url, stopVal, depth):
 	if len(sys.argv) != 4:
 		print len(sys.argv)
 		print ("ERROR: wrong argument number! \n")
-		print EOF
+		print 'EOF'
 	# Global variable containing all the URLS following this scheme of node
 	# { "http_url", {"toCrawl" : bool, "parent" : "http_parent"} }
 	urls = dict()
@@ -38,6 +38,7 @@ def main(url, stopVal, depth):
 	db0.connect()
 	
 	item = db0.findURL(url, depth)
+	path = None
 	if item:
 		print "======= Url found in the database ======="
 		path = item["imgPath"]
@@ -53,8 +54,9 @@ def main(url, stopVal, depth):
 		graph = Generate_Graph(url, urls, tree).graph
 		path = Display_Graph(url, graph).path
 		db0.addURL(url, depth, [], path)
-		
-	print EOF
+		print path
+		sys.exit(1)
+	return path
 	
 if __name__ == '__main__':
 	# Map command line arguments to function arguments.

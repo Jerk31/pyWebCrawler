@@ -16,6 +16,8 @@ jquery_ui_url = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.m
 jquery_ui_css_url = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/black-tie/jquery-ui.css'
 
 class MainPage(object):
+    test = None
+    
     @cherrypy.expose
     def index(self):
         html = open(os.path.join(DIRECTORY, 'index.html'), "r").read()
@@ -29,11 +31,7 @@ class MainPage(object):
 
     @cherrypy.expose
     def startCrawl(self, url, stopVal, depth, **kw):
-        ## return "<html><body>"+url+" "+stopVal+" "+depth+"<body></html>"
-        ## url = "'" + url.replace("'", "'\\''") + "'"
         command = "python runCrawler.py %s %s %s" % (url, stopVal, depth)
-        ## return "python runCrawler.py %s %s %s" % (url, stopVal, depth)
-        ## command = "ping %s" % host
         scroll_to_bottom = '<script type="text/javascript">window.scrollBy(0,50);</script>'
         process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE,
                         close_fds=True, preexec_fn=os.setsid)
@@ -41,12 +39,15 @@ class MainPage(object):
         cherrypy.session['pid'] = process.pid
         cherrypy.session.save()
         def run_command():
+            all_txt = ""
             yield '<style>body {font-family: monospace;}</style>'
             while not process.poll():
                 out = process.stdout.read(1) 
                 if out == '\n': 
                     out = "\n<br />%s" % scroll_to_bottom 
                 yield out 
+                all_txt += out
+            MainPage.test = all_txt[-88:]
             out = ""
             for char in process.stdout.read():
                 if char == "\n":
@@ -54,16 +55,28 @@ class MainPage(object):
                 else:
                     out += char
             yield out
+        #val = run_command()
+        #self.path = val[-10:]
         return run_command()
         
     startCrawl._cp_config = {'response.stream': True}
 
     @cherrypy.expose
+    def displayGraph(self, **kw):
+        img = """"img/""" + str(int(MainPage.test[9:19])) + """.png" """
+        val =  "<img src=" + img + """width="100%" alt="No graph to display."</img>"""
+        return val
+        #return str(MainPage.test)
+    
+    @cherrypy.expose
     def killCrawl(self, **kw):
         pid = cherrypy.session.get('pid')
         if not pid:
             return "No crawl to kill"
-        os.killpg(pid, signal.SIGINT)
+        try:
+            os.killpg(pid, signal.SIGINT)
+        except OSError:
+            pass
         return "The crawl was stopped."
 
 cherrypy.config.update({
